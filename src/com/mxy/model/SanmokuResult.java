@@ -4,7 +4,8 @@ import com.mxy.enumeration.SanmokuStatus;
 
 public class SanmokuResult {
 	private SanmokuStatus status;
-	private String map;
+	private String[] dispMap;
+	private String message;
 
 	public SanmokuStatus getStatus() {
 		return status;
@@ -12,10 +13,16 @@ public class SanmokuResult {
 	public void setStatus(SanmokuStatus status) {
 		this.status = status;
 	}
-	public String getMap() {
-		return map;
+	public String[] getDispMap() {
+		return dispMap;
 	}
-	public void setMap(String map) {
-		this.map = map;
+	public void setDispMap(String[] dispMap) {
+		this.dispMap = dispMap;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

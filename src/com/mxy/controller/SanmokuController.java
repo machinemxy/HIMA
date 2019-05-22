@@ -34,45 +34,23 @@ public class SanmokuController {
 
 	@RequestMapping(value = "/dropChess/{map}/{index}", method = RequestMethod.GET)
 	public String dropChess(HttpSession session, Model model, @PathVariable String map, @PathVariable int index) {
-		SanmokuData data = (SanmokuData)session.getAttribute("data");
-
+		map = service.decodeMap(map);
 		SanmokuResult result = service.playerDropChess(map, index);
-		if(result.getStatus() != SanmokuStatus.STILL_PLAYING) {
-			if (result.getStatus() == SanmokuStatus.SOMEONE_WIN) {
-				// player win
-				model.addAttribute("message", service.generateWinMessage());
-				data.setPlayerScore(data.getPlayerScore() + 1);
-			} else {
-				// draw
-				model.addAttribute("message", service.generateDrawMessage());
-			}
-			data.setGamePlayed(data.getGamePlayed() + 1);
-			session.setAttribute("data", data);
-			model.addAttribute("link", service.generateNextGameLink());
-			String[] dispMap = service.generateNoLinkMap(result.getMap());
-			model.addAttribute("dispMap", dispMap);
-			return "sanmoku";
-		}
-
-		result = service.cpuDropChess(map);
-		if(result.getStatus() != SanmokuStatus.STILL_PLAYING) {
-			String[] dispMap = service.generateDispMap(result.getMap());
-			model.addAttribute("dispMap", dispMap);
+		if(result.getStatus() == SanmokuStatus.STILL_PLAYING) {
+			model.addAttribute("dispMap", result.getDispMap());
 			return "sanmoku";
 		} else {
-			if (result.getStatus() == SanmokuStatus.SOMEONE_WIN) {
-				// cpu win
-				model.addAttribute("message", service.generateLoseMessage());
+			SanmokuData data = (SanmokuData)session.getAttribute("data");
+			if (result.getStatus() == SanmokuStatus.WIN) {
+				data.setPlayerScore(data.getPlayerScore() + 1);
+			} else if (result.getStatus() == SanmokuStatus.LOSE) {
 				data.setCpuScore(data.getCpuScore() + 1);
-			} else {
-				// draw
-				model.addAttribute("message", service.generateDrawMessage());
 			}
 			data.setGamePlayed(data.getGamePlayed() + 1);
 			session.setAttribute("data", data);
+			model.addAttribute("message", result.getMessage());
 			model.addAttribute("link", service.generateNextGameLink());
-			String[] dispMap = service.generateNoLinkMap(result.getMap());
-			model.addAttribute("dispMap", dispMap);
+			model.addAttribute("dispMap", result.getDispMap());
 			return "sanmoku";
 		}
 	}
@@ -83,8 +61,7 @@ public class SanmokuController {
 		SanmokuData data = (SanmokuData)session.getAttribute("data");
 		if (data.getGamePlayed() % 2 == 1) {
 			SanmokuResult result = service.cpuDropChess(map);
-			String[] dispMap = service.generateDispMap(result.getMap());
-			model.addAttribute("dispMap", dispMap);
+			model.addAttribute("dispMap", result.getDispMap());
 			return "sanmoku";
 		} else {
 			String[] dispMap = service.generateDispMap(map);
