@@ -2,5 +2,5 @@
 /.project
 /.settings/
 /build/
-/WebContent/WEB-INF/lib/
+/WebContent/WEB-INF/lib/*.jar
 .DS_Store
