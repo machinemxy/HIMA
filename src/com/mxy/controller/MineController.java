@@ -2,11 +2,13 @@ package com.mxy.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mxy.enumeration.MineStatus;
 import com.mxy.model.MineResult;
@@ -15,7 +17,7 @@ import com.mxy.service.MineService;
 @Controller
 @RequestMapping(value = "/mine")
 public class MineController {
-	// TODO add autowired
+	@Autowired
 	private MineService service;
 
 	@RequestMapping(value = "/init/{difficulty}", method = RequestMethod.GET)
@@ -31,8 +33,9 @@ public class MineController {
 		return "mine";
 	}
 
-	@RequestMapping(value = "/act/{action}/{y}/{x}", method = RequestMethod.POST)
-	public String act(HttpSession session, Model model, @PathVariable int action, @PathVariable int y, @PathVariable int x) {
+	@RequestMapping(value = "/act", method = RequestMethod.POST)
+	public String act(HttpSession session, Model model,
+			@RequestParam int action, @RequestParam int y, @RequestParam int x) {
 		String[][] realMap = (String[][])session.getAttribute("realMap");
 		String[][] userMap = (String[][])session.getAttribute("userMap");
 

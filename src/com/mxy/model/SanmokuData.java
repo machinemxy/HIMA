@@ -1,6 +1,9 @@
 package com.mxy.model;
 
-public class SanmokuData {
+import java.io.Serializable;
+
+public class SanmokuData implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int gamePlayed;
 	private int playerScore;
 	private int cpuScore;

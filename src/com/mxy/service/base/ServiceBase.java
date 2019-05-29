@@ -9,7 +9,7 @@ public abstract class ServiceBase {
 	@Autowired
 	private MessageSource messageSource;
 
-	public String getMessage(String messageId, Object ... params) {
+	protected String getMessage(String messageId, Object ... params) {
 		return messageSource.getMessage(messageId, params, Locale.JAPANESE);
 	}
 }
