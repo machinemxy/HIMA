@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mxy.enumeration.MineStatus;
@@ -15,12 +14,12 @@ import com.mxy.model.MineResult;
 import com.mxy.service.MineService;
 
 @Controller
-@RequestMapping(value = "/mine")
+@RequestMapping("/mine")
 public class MineController {
 	@Autowired
 	private MineService service;
 
-	@RequestMapping(value = "/init/{difficulty}", method = RequestMethod.GET)
+	@RequestMapping("/init/{difficulty}")
 	public String init(HttpSession session, Model model, @PathVariable int difficulty) {
 		String[][] realMap = service.initRealMap(difficulty);
 		String[][] userMap = service.initUserMap(difficulty);
@@ -33,7 +32,7 @@ public class MineController {
 		return "mine";
 	}
 
-	@RequestMapping(value = "/act", method = RequestMethod.POST)
+	@RequestMapping("/act")
 	public String act(HttpSession session, Model model,
 			@RequestParam int action, @RequestParam int y, @RequestParam int x) {
 		String[][] realMap = (String[][])session.getAttribute("realMap");

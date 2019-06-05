@@ -9,8 +9,8 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/component/header.jsp"/>
-	<p>●あなた：${sessionScope.data.playerScore}</p>
-	<p>▲ＣＰＵ：${sessionScope.data.cpuScore}</p>
+	<p>●あなた：${sanmokuData.playerScore}</p>
+	<p>▲ＣＰＵ：${sanmokuData.cpuScore}</p>
 	<table border="1">
 		<c:forEach var="i" begin="0" end="2">
 			<tr>
