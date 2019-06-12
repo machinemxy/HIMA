@@ -9,7 +9,8 @@
 <title>暇潰し</title>
 </head>
 <body>
-	<form:form action="/HIMA/sudoku/levelSelect" modelAttribute="sudokuLevelSelectForm">
+	<jsp:include page="/WEB-INF/component/header.jsp"/>
+	<form:form action="/HIMA/sudoku/mainStage" modelAttribute="sudokuLevelSelectForm">
 		<form:select path="level" items="${levelMap}"/><br/>
 		<form:button>確認</form:button>
 	</form:form>
