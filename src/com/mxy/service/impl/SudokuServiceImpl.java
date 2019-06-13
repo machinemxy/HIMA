@@ -1,7 +1,11 @@
 package com.mxy.service.impl;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -43,4 +47,78 @@ public class SudokuServiceImpl extends ServiceBase implements SudokuService {
 		return stage;
 	}
 
+	@Override
+	public String judgeResult(String[][] result) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if ("".contentEquals(result[i][j])) {
+					return getMessage("sudoku.notInput");
+				} else if (!isInputCorrect(result[i][j])) {
+					return getMessage("sudoku.incorrectInput");
+				}
+			}
+		}
+
+		for (int i = 0; i < 9; i++) {
+			Set<String> set = new HashSet<String>();
+			for (int j = 0; j < 9; j++) {
+				set.add(result[i][j]);
+			}
+			if (set.size() < 9) {
+				return getMessage("sudoku.wrong");
+			}
+		}
+
+		for (int i = 0; i < 9; i++) {
+			Set<String> set = new HashSet<String>();
+			for (int j = 0; j < 9; j++) {
+				set.add(result[j][i]);
+			}
+			if (set.size() < 9) {
+				return getMessage("sudoku.wrong");
+			}
+		}
+
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				Set<String> set = new HashSet<String>();
+				for (int k = 0; k < 3; k++) {
+					for (int l = 0; l < 3; l++) {
+						set.add(result[i*3+k][j*3+l]);
+					}
+				}
+				if (set.size() < 9) {
+					return getMessage("sudoku.wrong");
+				}
+			}
+		}
+
+		return getMessage("sudoku.right");
+	}
+
+	@Override
+	public String[][] convertResultToStage(int level, String[][] result) {
+		String strStage = getProperty("sudoku." + level);
+		char[] charStage = strStage.toCharArray();
+		String[][] stage = new String[9][9];
+
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				char cell = charStage[i * 9 + j];
+				if (cell == '_') {
+					stage[i][j] = "<input type='text' name='c" + i + j + "' value='" + result[i][j] + "' size='1' maxlength='1'/>";
+				} else {
+					stage[i][j] = "<input type='text' name='c" + i + j + "' value='" + cell + "' size='1' readonly style='color:blue;font-weight:bold'/>";
+				}
+			}
+		}
+
+		return stage;
+	}
+
+	private boolean isInputCorrect(String value) {
+		Pattern pattern = Pattern.compile("[1-9]");
+		Matcher matcher = pattern.matcher(value);
+		return matcher.matches();
+	}
 }

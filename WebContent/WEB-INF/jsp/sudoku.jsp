@@ -34,5 +34,7 @@
 		<button type="submit">確定</button>
 		<input type="hidden" name="level" value="${level}"/>
 	</form>
+	<br/>
+	${message}
 </body>
 </html>
