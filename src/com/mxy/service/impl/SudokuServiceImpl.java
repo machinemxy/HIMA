@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -117,8 +115,6 @@ public class SudokuServiceImpl extends ServiceBase implements SudokuService {
 	}
 
 	private boolean isInputCorrect(String value) {
-		Pattern pattern = Pattern.compile("[1-9]");
-		Matcher matcher = pattern.matcher(value);
-		return matcher.matches();
+		return value.matches("[1-9]");
 	}
 }
